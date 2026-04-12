@@ -26,14 +26,16 @@ export default function AdminLogin() {
 
       if (!res.ok) {
         setError(data.error || "登录失败");
+        setLoading(false);
         return;
       }
 
-      router.push("/admin/cards");
+      // 登录成功，保持 loading 状态直到跳转完成
+      await router.push("/admin/cards");
       router.refresh();
+      // 跳转完成后不需要 setLoading(false)，页面会卸载
     } catch {
       setError("网络错误，请重试");
-    } finally {
       setLoading(false);
     }
   };
