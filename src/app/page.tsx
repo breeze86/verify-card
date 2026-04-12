@@ -149,36 +149,36 @@ export default function Home() {
       {/* Modal */}
       {showModal && result && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm"
           onClick={(e) => {
             if (e.target === e.currentTarget) closeModal();
           }}
         >
-          <div className="relative w-full max-h-[90vh] overflow-hidden bg-gradient-to-b from-slate-900 to-slate-800 rounded-2xl shadow-2xl border border-amber-500/30" style={{ maxWidth: '800px' }}>
+          <div className="relative w-full max-h-[92dvh] sm:max-h-[90vh] overflow-hidden bg-gradient-to-b from-slate-900 to-slate-800 rounded-2xl shadow-2xl border border-amber-500/30" style={{ maxWidth: '800px' }}>
             {/* Compact Header with Close Button */}
-            <div className="bg-slate-900/80 backdrop-blur px-5 py-3 border-b border-amber-500/30 flex items-center justify-between shrink-0">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-slate-900" fill="currentColor" viewBox="0 0 20 20">
+            <div className="bg-slate-900/80 backdrop-blur px-3 sm:px-5 py-2.5 sm:py-3 border-b border-amber-500/30 flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
+                  <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-900" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-amber-400 leading-tight">Card Grading Certificate</h2>
-                  <p className="text-slate-500 text-xs">STG & Astra Grading Services</p>
+                  <h2 className="text-base sm:text-lg font-bold text-amber-400 leading-tight">Card Grading Certificate</h2>
+                  <p className="text-slate-500 text-[10px] sm:text-xs">STG & Astra Grading Services</p>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 sm:gap-4">
                 <div className="text-right hidden sm:block">
                   <div className="text-xs text-slate-500 uppercase tracking-wider">Cert #</div>
                   <div className="text-sm font-mono text-amber-200">{result.certNo}</div>
                 </div>
                 <button
                   onClick={closeModal}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+                  className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
                   aria-label="Close"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
@@ -186,20 +186,20 @@ export default function Home() {
             </div>
 
             {/* Scrollable Content - Compact Layout */}
-            <div className="app-scrollbar overflow-y-auto max-h-[calc(90vh-60px)]" data-scrollable="true">
-              <div className="p-5">
+            <div className="app-scrollbar overflow-y-auto max-h-[calc(92dvh-50px)] sm:max-h-[calc(90vh-60px)] pb-[env(safe-area-inset-bottom)]" data-scrollable="true">
+              <div className="p-3 sm:p-5">
                 {/* Grade Badge - Horizontal at top */}
-                <div className="flex flex-col items-center justify-center mb-5 p-4 bg-gradient-to-r from-slate-800 via-slate-900 to-slate-800 rounded-xl border border-amber-500/20">
-                  <div className="text-sm text-slate-400 uppercase tracking-wider mb-1">Grade</div>
-                  <div className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-200 via-amber-400 to-amber-600 leading-none">
+                <div className="flex flex-col items-center justify-center mb-3 sm:mb-5 p-2.5 sm:p-4 bg-gradient-to-r from-slate-800 via-slate-900 to-slate-800 rounded-xl border border-amber-500/20">
+                  <div className="text-xs sm:text-sm text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1">Grade</div>
+                  <div className="text-lg sm:text-xl font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-200 via-amber-400 to-amber-600 leading-none">
                     {result.grade}
                   </div>
                 </div>
 
                 {/* Images Grid */}
-                <div className="grid grid-cols-2 gap-4 max-w-[80%] mx-auto">
+                <div className="grid grid-cols-2 gap-2 sm:gap-4 max-w-[85%] sm:max-w-[80%] mx-auto">
                   <div
-                    className="bg-slate-800/50 rounded-lg p-2 border border-slate-700 cursor-pointer hover:border-amber-500/50 transition-colors"
+                    className="bg-slate-800/50 rounded-lg p-1.5 sm:p-2 border border-slate-700 cursor-pointer hover:border-amber-500/50 transition-colors"
                     onClick={() => result.frontImageUrl && setEnlargedImage({ url: result.frontImageUrl, alt: "Card Front" })}
                   >
                     <div className="aspect-[2/3] relative rounded overflow-hidden bg-slate-900">
@@ -211,15 +211,15 @@ export default function Home() {
                           className="object-contain hover:scale-105 transition-transform"
                         />
                       ) : (
-                        <div className="flex items-center justify-center h-full text-slate-500 text-sm">
+                        <div className="flex items-center justify-center h-full text-slate-500 text-xs sm:text-sm">
                           No image
                         </div>
                       )}
                     </div>
-                    <div className="text-center mt-1.5 text-xs text-slate-500 font-medium uppercase tracking-wider">Front</div>
+                    <div className="text-center mt-1 text-[10px] sm:text-xs text-slate-500 font-medium uppercase tracking-wider">Front</div>
                   </div>
                   <div
-                    className="bg-slate-800/50 rounded-lg p-2 border border-slate-700 cursor-pointer hover:border-amber-500/50 transition-colors"
+                    className="bg-slate-800/50 rounded-lg p-1.5 sm:p-2 border border-slate-700 cursor-pointer hover:border-amber-500/50 transition-colors"
                     onClick={() => result.backImageUrl && setEnlargedImage({ url: result.backImageUrl, alt: "Card Back" })}
                   >
                     <div className="aspect-[2/3] relative rounded overflow-hidden bg-slate-900">
@@ -231,53 +231,53 @@ export default function Home() {
                           className="object-contain hover:scale-105 transition-transform"
                         />
                       ) : (
-                        <div className="flex items-center justify-center h-full text-slate-500 text-sm">
+                        <div className="flex items-center justify-center h-full text-slate-500 text-xs sm:text-sm">
                           No image
                         </div>
                       )}
                     </div>
-                    <div className="text-center mt-1.5 text-xs text-slate-500 font-medium uppercase tracking-wider">Back</div>
+                    <div className="text-center mt-1 text-[10px] sm:text-xs text-slate-500 font-medium uppercase tracking-wider">Back</div>
                   </div>
                 </div>
 
                 {/* Card Details - Compact Grid */}
-                <div className="mt-5 pt-4 border-t border-slate-700/50 flex flex-col items-center">
-                  <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3 text-center">Card Information</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-4 w-full text-center">
+                <div className="mt-3 sm:mt-5 pt-3 sm:pt-4 border-t border-slate-700/50 flex flex-col items-center">
+                  <h3 className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 sm:mb-3 text-center">Card Information</h3>
+                  <div className="grid grid-cols-3 gap-x-3 sm:gap-x-8 gap-y-2 sm:gap-y-4 w-full text-center">
                     <div>
-                      <span className="text-sm text-slate-400 uppercase block">Brand</span>
-                      <p className="text-base text-slate-200 font-medium truncate">{result.brand}</p>
+                      <span className="text-[10px] sm:text-sm text-slate-400 uppercase block">Brand</span>
+                      <p className="text-xs sm:text-base text-slate-200 font-medium truncate">{result.brand}</p>
                     </div>
                     <div>
-                      <span className="text-sm text-slate-400 uppercase block">Series</span>
-                      <p className="text-base text-slate-200 font-medium truncate">{result.series}</p>
+                      <span className="text-[10px] sm:text-sm text-slate-400 uppercase block">Series</span>
+                      <p className="text-xs sm:text-base text-slate-200 font-medium truncate">{result.series}</p>
                     </div>
                     <div>
-                      <span className="text-sm text-slate-400 uppercase block">Product</span>
-                      <p className="text-base text-slate-200 font-medium truncate">{result.productName}</p>
+                      <span className="text-[10px] sm:text-sm text-slate-400 uppercase block">Product</span>
+                      <p className="text-xs sm:text-base text-slate-200 font-medium truncate">{result.productName}</p>
                     </div>
                     <div>
-                      <span className="text-sm text-slate-400 uppercase block">Year</span>
-                      <p className="text-base text-slate-200 font-medium">{result.issueYear}</p>
+                      <span className="text-[10px] sm:text-sm text-slate-400 uppercase block">Year</span>
+                      <p className="text-xs sm:text-base text-slate-200 font-medium">{result.issueYear}</p>
                     </div>
                     <div>
-                      <span className="text-sm text-slate-400 uppercase block">Language</span>
-                      <p className="text-base text-slate-200 font-medium">{result.language}</p>
+                      <span className="text-[10px] sm:text-sm text-slate-400 uppercase block">Language</span>
+                      <p className="text-xs sm:text-base text-slate-200 font-medium">{result.language}</p>
                     </div>
                     <div>
-                      <span className="text-sm text-slate-400 uppercase block">Product No.</span>
-                      <p className="text-base text-slate-200 font-medium truncate">{result.productNo}</p>
+                      <span className="text-[10px] sm:text-sm text-slate-400 uppercase block">Product No.</span>
+                      <p className="text-xs sm:text-base text-slate-200 font-medium truncate">{result.productNo}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Security Footer - Compact */}
-                <div className="mt-4 pt-3 border-t border-slate-700/50 flex items-center justify-between">
-                  <div className="flex items-center gap-1.5">
+                <div className="mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-slate-700/50 flex items-center justify-between">
+                  <div className="flex items-center gap-1 sm:gap-1.5">
                     <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-                    <span className="text-xs text-slate-400">Grading Verified</span>
+                    <span className="text-[10px] sm:text-xs text-slate-400">Grading Verified</span>
                   </div>
-                  <div className="text-xs text-slate-500 font-mono">SECURE • AUTHENTIC • GUARANTEED</div>
+                  <div className="text-[10px] sm:text-xs text-slate-500 font-mono">SECURE • AUTHENTIC • GUARANTEED</div>
                 </div>
               </div>
             </div>
@@ -358,20 +358,20 @@ export default function Home() {
       {/* Enlarged Image Modal */}
       {enlargedImage && (
         <div
-          className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
+          className="fixed inset-0 z-[60] flex items-center justify-center p-3 sm:p-4 bg-black/90 backdrop-blur-sm pb-[env(safe-area-inset-bottom)]"
           onClick={() => setEnlargedImage(null)}
         >
-          <div className="relative max-w-5xl max-h-[90vh] w-full flex flex-col items-center">
+          <div className="relative max-w-5xl max-h-[92dvh] sm:max-h-[90vh] w-full flex flex-col items-center">
             <button
               onClick={() => setEnlargedImage(null)}
-              className="absolute -top-12 right-0 w-10 h-10 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white transition-colors"
+              className="absolute -top-10 sm:-top-12 right-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white transition-colors"
               aria-label="Close"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <div className="relative w-full h-[80vh] flex items-center justify-center">
+            <div className="relative w-full h-[75dvh] sm:h-[80vh] flex items-center justify-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={enlargedImage.url}
@@ -380,8 +380,8 @@ export default function Home() {
                 onClick={(e) => e.stopPropagation()}
               />
             </div>
-            <div className="mt-4 text-center">
-              <span className="text-amber-400 text-lg font-medium">{enlargedImage.alt}</span>
+            <div className="mt-3 sm:mt-4 text-center">
+              <span className="text-amber-400 text-base sm:text-lg font-medium">{enlargedImage.alt}</span>
             </div>
           </div>
         </div>
