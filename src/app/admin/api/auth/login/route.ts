@@ -37,8 +37,8 @@ export async function POST(request: NextRequest) {
     const response = NextResponse.json({ success: true });
     response.cookies.set("admin_session", admin.id, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production" && process.env.ALLOW_INSECURE_COOKIE !== "true",
+      sameSite: "lax",
       maxAge: 60 * 60 * 24 * 7, // 7天
     });
 
