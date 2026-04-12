@@ -8,8 +8,7 @@ module.exports = {
   apps: [
     {
       name: 'verify-card',
-      script: './node_modules/next/dist/bin/next',
-      args: 'start',
+      script: './.next/standalone/server.js',
       cwd: __dirname,
       instances: 1,
       autorestart: true,
