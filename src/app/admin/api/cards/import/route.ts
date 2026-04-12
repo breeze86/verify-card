@@ -2,11 +2,26 @@ import { NextRequest, NextResponse } from "next/server";
 import { parse } from "papaparse";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin-auth";
+import { generateBatchNo } from "@/lib/batch-no";
 
-interface CsvRow {
-  cardNo?: string;
+// CSV 中文表头到英文字段名的映射
+const CSV_HEADER_MAP: Record<string, keyof CardData> = {
+  "证书编号": "certNo",
+  "商品品牌": "brand",
+  "商品系列": "series",
+  "商品名称": "productName",
+  "发行年份": "issueYear",
+  "语言": "language",
+  "商品编号": "productNo",
+  "评分": "grade",
+  "正面照片链接": "frontImageUrl",
+  "背面照片链接": "backImageUrl",
+  "状态": "status",
+};
+
+// 内部统一使用英文字段名
+interface CardData {
   certNo?: string;
-  tagNo?: string;
   brand?: string;
   series?: string;
   productName?: string;
@@ -17,16 +32,43 @@ interface CsvRow {
   frontImageUrl?: string;
   backImageUrl?: string;
   status?: string;
-  batchNo?: string;
-  validStart?: string;
-  validEnd?: string;
 }
 
 interface PreviewResult {
   row: number;
-  data: CsvRow;
+  data: CardData;
   errors: string[];
   exists: boolean;
+}
+
+// 将中文表头的 CSV 行转换为英文字段名
+function convertCsvRow(row: Record<string, string>): CardData {
+  const result: Partial<CardData> = {};
+  for (const [rawKey, value] of Object.entries(row)) {
+    // 去除 BOM 和空白字符
+    const cnKey = rawKey.replace(/^\uFEFF/, "").trim();
+    const enKey = CSV_HEADER_MAP[cnKey];
+    if (enKey) {
+      result[enKey] = value;
+    }
+  }
+  return result as CardData;
+}
+
+// 验证必填字段
+function validateRow(row: CardData): string[] {
+  const errors: string[] = [];
+  if (!row.certNo?.trim()) errors.push("证书编号不能为空");
+  if (!row.brand?.trim()) errors.push("商品品牌不能为空");
+  if (!row.series?.trim()) errors.push("商品系列不能为空");
+  if (!row.productName?.trim()) errors.push("商品名称不能为空");
+  if (!row.issueYear?.trim()) errors.push("发行年份不能为空");
+  if (!row.language?.trim()) errors.push("语言不能为空");
+  if (!row.productNo?.trim()) errors.push("商品编号不能为空");
+  if (!row.grade?.trim()) errors.push("评分不能为空");
+  if (!row.frontImageUrl?.trim()) errors.push("正面照片链接不能为空");
+  if (!row.backImageUrl?.trim()) errors.push("背面照片链接不能为空");
+  return errors;
 }
 
 export async function POST(request: NextRequest) {
@@ -35,14 +77,14 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
     const file = formData.get("file") as File;
-    const action = formData.get("action") as string; // 'preview' or 'import'
+    const action = formData.get("action") as string;
 
     if (!file) {
       return NextResponse.json({ error: "请上传CSV文件" }, { status: 400 });
     }
 
     const text = await file.text();
-    const result = parse<CsvRow>(text, {
+    const result = parse<Record<string, string>>(text, {
       header: true,
       skipEmptyLines: true,
     });
@@ -54,46 +96,34 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const rows = result.data;
+    // 转换为英文字段名并过滤空行
+    const rows = result.data
+      .map(convertCsvRow)
+      .filter((row) => Object.values(row).some((val) => val?.trim()));
+
     const preview: PreviewResult[] = [];
 
-    // 验证每一行
     for (let i = 0; i < rows.length; i++) {
       const row = rows[i];
-      const errors: string[] = [];
+      const errors = validateRow(row);
 
-      // 必填字段验证
-      if (!row.cardNo) errors.push("卡号不能为空");
-      if (!row.certNo) errors.push("证书编号不能为空");
-      if (!row.tagNo) errors.push("标签号不能为空");
-      if (!row.brand) errors.push("商品品牌不能为空");
-      if (!row.series) errors.push("商品系列不能为空");
-      if (!row.productName) errors.push("商品名称不能为空");
-      if (!row.issueYear) errors.push("发行年份不能为空");
-      if (!row.language) errors.push("语言不能为空");
-      if (!row.productNo) errors.push("商品编号不能为空");
-      if (!row.grade) errors.push("评分不能为空");
-      if (!row.frontImageUrl) errors.push("正面照片链接不能为空");
-      if (!row.backImageUrl) errors.push("背面照片链接不能为空");
-
-      // 检查卡号是否已存在
+      // 检查证书编号是否已存在
       let exists = false;
-      if (row.cardNo) {
+      if (row.certNo?.trim()) {
         const existing = await prisma.card.findUnique({
-          where: { cardNo: row.cardNo },
+          where: { certNo: row.certNo.trim() },
         });
         exists = !!existing;
       }
 
       preview.push({
-        row: i + 2, // CSV行号从1开始，第1行是表头
+        row: i + 1, // 从1开始计数
         data: row,
         errors,
         exists,
       });
     }
 
-    // 如果只是预览，返回预览数据
     if (action === "preview") {
       return NextResponse.json({
         total: rows.length,
@@ -107,52 +137,48 @@ export async function POST(request: NextRequest) {
 
     // 执行导入
     const validRows = preview.filter((p) => p.errors.length === 0);
+    const invalidRows = preview.filter((p) => p.errors.length > 0);
     const imported = [];
     const failed = [];
+
+    // 批量导入时，所有记录使用同一个批次号
+    const batchNo = await generateBatchNo();
 
     for (const item of validRows) {
       try {
         const row = item.data;
         const card = await prisma.card.upsert({
-          where: { cardNo: row.cardNo! },
+          where: { certNo: row.certNo!.trim() },
           update: {
-            certNo: row.certNo!,
-            tagNo: row.tagNo!,
-            brand: row.brand!,
-            series: row.series!,
-            productName: row.productName!,
-            issueYear: parseInt(row.issueYear!, 10),
-            language: row.language!,
-            productNo: row.productNo!,
-            grade: row.grade!,
-            frontImageUrl: row.frontImageUrl!,
-            backImageUrl: row.backImageUrl!,
-            status: (row.status as 'active' | 'inactive' | 'expired') || "active",
-            batchNo: row.batchNo || null,
-            validStart: row.validStart ? new Date(row.validStart) : null,
-            validEnd: row.validEnd ? new Date(row.validEnd) : null,
-            deletedAt: null, // 恢复已删除的
+            brand: row.brand!.trim(),
+            series: row.series!.trim(),
+            productName: row.productName!.trim(),
+            issueYear: parseInt(row.issueYear!.trim(), 10),
+            language: row.language!.trim(),
+            productNo: row.productNo!.trim(),
+            grade: row.grade!.trim(),
+            frontImageUrl: row.frontImageUrl!.trim(),
+            backImageUrl: row.backImageUrl!.trim(),
+            status: (row.status as "active" | "inactive" | "expired") || "active",
+            batchNo,
+            deletedAt: null,
           },
           create: {
-            cardNo: row.cardNo!,
-            certNo: row.certNo!,
-            tagNo: row.tagNo!,
-            brand: row.brand!,
-            series: row.series!,
-            productName: row.productName!,
-            issueYear: parseInt(row.issueYear!, 10),
-            language: row.language!,
-            productNo: row.productNo!,
-            grade: row.grade!,
-            frontImageUrl: row.frontImageUrl!,
-            backImageUrl: row.backImageUrl!,
-            status: (row.status as 'active' | 'inactive' | 'expired') || "active",
-            batchNo: row.batchNo || null,
-            validStart: row.validStart ? new Date(row.validStart) : null,
-            validEnd: row.validEnd ? new Date(row.validEnd) : null,
+            certNo: row.certNo!.trim(),
+            brand: row.brand!.trim(),
+            series: row.series!.trim(),
+            productName: row.productName!.trim(),
+            issueYear: parseInt(row.issueYear!.trim(), 10),
+            language: row.language!.trim(),
+            productNo: row.productNo!.trim(),
+            grade: row.grade!.trim(),
+            frontImageUrl: row.frontImageUrl!.trim(),
+            backImageUrl: row.backImageUrl!.trim(),
+            status: (row.status as "active" | "inactive" | "expired") || "active",
+            batchNo,
           },
         });
-        imported.push({ row: item.row, cardNo: card.cardNo });
+        imported.push({ row: item.row, certNo: card.certNo });
       } catch (error) {
         failed.push({ row: item.row, error: String(error) });
       }
@@ -162,6 +188,8 @@ export async function POST(request: NextRequest) {
       success: true,
       imported: imported.length,
       failed: failed.length,
+      skipped: invalidRows.length,
+      skippedDetails: invalidRows.map((r) => ({ row: r.row, errors: r.errors })),
       details: { imported, failed },
     });
   } catch (error) {

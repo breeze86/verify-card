@@ -12,12 +12,10 @@ datasource db {
 
 model Card {
   id            String    @id @default(uuid())
-  cardNo        String    @unique @db.VarChar(32)
   status        CardStatus @default(active)
 
   // 验证结果字段
-  certNo        String    @db.VarChar(100)
-  tagNo         String    @db.VarChar(100)
+  certNo        String    @unique @db.VarChar(100)
   brand         String    @db.VarChar(100)
   series        String    @db.VarChar(100)
   productName   String    @db.VarChar(200)
@@ -32,14 +30,11 @@ model Card {
 
   // 管理字段
   batchNo       String?   @db.VarChar(100)
-  validStart    DateTime?
-  validEnd      DateTime?
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   deletedAt     DateTime?
 
-  @@index([cardNo])
   @@index([certNo])
   @@index([status])
   @@map("cards")

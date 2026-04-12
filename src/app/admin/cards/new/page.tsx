@@ -66,39 +66,13 @@ export default function NewCardPage() {
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                  卡号 <span className="text-red-500">*</span>
-                </label>
-                <input
-                  name="cardNo"
-                  type="text"
-                  required
-                  maxLength={32}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
-                  placeholder="15位数字"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
                   证书编号 <span className="text-red-500">*</span>
                 </label>
                 <input
                   name="certNo"
                   type="text"
                   required
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  标签号 <span className="text-red-500">*</span>
-                </label>
-                <input
-                  name="tagNo"
-                  type="text"
-                  required
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                 />
               </div>
 
@@ -110,7 +84,7 @@ export default function NewCardPage() {
                   name="brand"
                   type="text"
                   required
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                 />
               </div>
 
@@ -122,7 +96,7 @@ export default function NewCardPage() {
                   name="series"
                   type="text"
                   required
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                 />
               </div>
 
@@ -134,7 +108,7 @@ export default function NewCardPage() {
                   name="productName"
                   type="text"
                   required
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                 />
               </div>
 
@@ -149,7 +123,7 @@ export default function NewCardPage() {
                   min={1900}
                   max={2100}
                   defaultValue={new Date().getFullYear()}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                 />
               </div>
 
@@ -162,7 +136,7 @@ export default function NewCardPage() {
                   type="text"
                   required
                   defaultValue="English"
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                 />
               </div>
 
@@ -174,7 +148,7 @@ export default function NewCardPage() {
                   name="productNo"
                   type="text"
                   required
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                 />
               </div>
 
@@ -187,7 +161,7 @@ export default function NewCardPage() {
                   type="text"
                   required
                   placeholder="如: PSA 10"
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                 />
               </div>
 
@@ -199,7 +173,7 @@ export default function NewCardPage() {
                   name="frontImageUrl"
                   type="url"
                   required
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                   placeholder="https://..."
                 />
               </div>
@@ -212,7 +186,7 @@ export default function NewCardPage() {
                   name="backImageUrl"
                   type="url"
                   required
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                   placeholder="https://..."
                 />
               </div>
@@ -224,45 +198,12 @@ export default function NewCardPage() {
                 <select
                   name="status"
                   defaultValue="active"
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900 bg-white"
                 >
                   <option value="active">有效</option>
                   <option value="inactive">无效</option>
                   <option value="expired">已过期</option>
                 </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  批次号
-                </label>
-                <input
-                  name="batchNo"
-                  type="text"
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  有效期开始
-                </label>
-                <input
-                  name="validStart"
-                  type="date"
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  有效期结束
-                </label>
-                <input
-                  name="validEnd"
-                  type="date"
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
-                />
               </div>
             </div>
 
@@ -276,7 +217,7 @@ export default function NewCardPage() {
               </button>
               <Link
                 href="/admin/cards"
-                className="px-6 py-2 border border-slate-300 rounded-lg hover:bg-slate-50"
+                className="px-6 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50"
               >
                 取消
               </Link>

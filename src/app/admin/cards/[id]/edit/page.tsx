@@ -6,9 +6,7 @@ import Link from "next/link";
 
 interface Card {
   id: string;
-  cardNo: string;
   certNo: string;
-  tagNo: string;
   brand: string;
   series: string;
   productName: string;
@@ -20,8 +18,6 @@ interface Card {
   backImageUrl: string;
   status: string;
   batchNo: string | null;
-  validStart: string | null;
-  validEnd: string | null;
 }
 
 export default function EditCardPage({ params }: { params: Promise<{ id: string }> }) {
@@ -121,20 +117,6 @@ export default function EditCardPage({ params }: { params: Promise<{ id: string 
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                  卡号 <span className="text-red-500">*</span>
-                </label>
-                <input
-                  name="cardNo"
-                  type="text"
-                  required
-                  maxLength={32}
-                  defaultValue={card?.cardNo}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
                   证书编号 <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -142,20 +124,7 @@ export default function EditCardPage({ params }: { params: Promise<{ id: string 
                   type="text"
                   required
                   defaultValue={card?.certNo}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  标签号 <span className="text-red-500">*</span>
-                </label>
-                <input
-                  name="tagNo"
-                  type="text"
-                  required
-                  defaultValue={card?.tagNo}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                 />
               </div>
 
@@ -168,7 +137,7 @@ export default function EditCardPage({ params }: { params: Promise<{ id: string 
                   type="text"
                   required
                   defaultValue={card?.brand}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                 />
               </div>
 
@@ -181,7 +150,7 @@ export default function EditCardPage({ params }: { params: Promise<{ id: string 
                   type="text"
                   required
                   defaultValue={card?.series}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                 />
               </div>
 
@@ -194,7 +163,7 @@ export default function EditCardPage({ params }: { params: Promise<{ id: string 
                   type="text"
                   required
                   defaultValue={card?.productName}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                 />
               </div>
 
@@ -209,7 +178,7 @@ export default function EditCardPage({ params }: { params: Promise<{ id: string 
                   min={1900}
                   max={2100}
                   defaultValue={card?.issueYear}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                 />
               </div>
 
@@ -222,7 +191,7 @@ export default function EditCardPage({ params }: { params: Promise<{ id: string 
                   type="text"
                   required
                   defaultValue={card?.language}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                 />
               </div>
 
@@ -235,7 +204,7 @@ export default function EditCardPage({ params }: { params: Promise<{ id: string 
                   type="text"
                   required
                   defaultValue={card?.productNo}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                 />
               </div>
 
@@ -249,7 +218,7 @@ export default function EditCardPage({ params }: { params: Promise<{ id: string 
                   required
                   defaultValue={card?.grade}
                   placeholder="如: PSA 10"
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                 />
               </div>
 
@@ -262,7 +231,7 @@ export default function EditCardPage({ params }: { params: Promise<{ id: string 
                   type="url"
                   required
                   defaultValue={card?.frontImageUrl}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                   placeholder="https://..."
                 />
               </div>
@@ -276,7 +245,7 @@ export default function EditCardPage({ params }: { params: Promise<{ id: string 
                   type="url"
                   required
                   defaultValue={card?.backImageUrl}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                   placeholder="https://..."
                 />
               </div>
@@ -288,48 +257,12 @@ export default function EditCardPage({ params }: { params: Promise<{ id: string 
                 <select
                   name="status"
                   defaultValue={card?.status || "active"}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                 >
                   <option value="active">有效</option>
                   <option value="inactive">无效</option>
                   <option value="expired">已过期</option>
                 </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  批次号
-                </label>
-                <input
-                  name="batchNo"
-                  type="text"
-                  defaultValue={card?.batchNo || ""}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  有效期开始
-                </label>
-                <input
-                  name="validStart"
-                  type="date"
-                  defaultValue={card?.validStart ? card.validStart.split("T")[0] : ""}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  有效期结束
-                </label>
-                <input
-                  name="validEnd"
-                  type="date"
-                  defaultValue={card?.validEnd ? card.validEnd.split("T")[0] : ""}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
-                />
               </div>
             </div>
 
@@ -343,7 +276,7 @@ export default function EditCardPage({ params }: { params: Promise<{ id: string 
               </button>
               <Link
                 href="/admin/cards"
-                className="px-6 py-2 border border-slate-300 rounded-lg hover:bg-slate-50"
+                className="px-6 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50"
               >
                 取消
               </Link>

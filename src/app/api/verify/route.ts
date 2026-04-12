@@ -3,23 +3,23 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const cardNo = searchParams.get("cardNo");
+  const certNo = searchParams.get("certNo");
 
-  if (!cardNo) {
+  if (!certNo) {
     return NextResponse.json(
-      { error: "Card number is required" },
+      { error: "Certificate number is required" },
       { status: 400 }
     );
   }
 
   try {
     const card = await prisma.card.findUnique({
-      where: { cardNo },
+      where: { certNo },
     });
 
     if (!card || card.deletedAt) {
       return NextResponse.json(
-        { error: "Card not found" },
+        { error: "No matching card record found for this certification number. Please verify the number and try again." },
         { status: 404 }
       );
     }
@@ -38,16 +38,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    if (card.validEnd && new Date() > card.validEnd) {
-      return NextResponse.json(
-        { error: "This card has expired" },
-        { status: 400 }
-      );
-    }
-
     return NextResponse.json({
       certNo: card.certNo,
-      tagNo: card.tagNo,
       brand: card.brand,
       series: card.series,
       productName: card.productName,

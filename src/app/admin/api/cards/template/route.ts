@@ -7,28 +7,21 @@ export async function GET() {
     await requireAdmin();
 
     const headers = [
-      "cardNo",
-      "certNo",
-      "tagNo",
-      "brand",
-      "series",
-      "productName",
-      "issueYear",
-      "language",
-      "productNo",
-      "grade",
-      "frontImageUrl",
-      "backImageUrl",
-      "status",
-      "batchNo",
-      "validStart",
-      "validEnd",
+      "证书编号",
+      "商品品牌",
+      "商品系列",
+      "商品名称",
+      "发行年份",
+      "语言",
+      "商品编号",
+      "评分",
+      "正面照片链接",
+      "背面照片链接",
+      "状态",
     ];
 
     const example = [
-      "123456789012345",
       "CERT-2024-001",
-      "TAG-001",
       "Pokémon",
       "Scarlet & Violet",
       "Charizard EX",
@@ -39,9 +32,6 @@ export async function GET() {
       "https://example.com/front.jpg",
       "https://example.com/back.jpg",
       "active",
-      "BATCH-001",
-      "2024-01-01",
-      "2025-12-31",
     ];
 
     const csv = stringify([headers, example]);
@@ -49,7 +39,7 @@ export async function GET() {
     return new NextResponse(csv, {
       headers: {
         "Content-Type": "text/csv; charset=utf-8",
-        "Content-Disposition": "attachment; filename=stg-astra-card-template.csv",
+        "Content-Disposition": "attachment; filename=card-import-template.csv",
       },
     });
   } catch (error) {

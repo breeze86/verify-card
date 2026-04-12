@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin-auth";
+import { generateBatchNo } from "@/lib/batch-no";
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,9 +9,7 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     const {
-      cardNo,
       certNo,
-      tagNo,
       brand,
       series,
       productName,
@@ -21,36 +20,34 @@ export async function POST(request: NextRequest) {
       frontImageUrl,
       backImageUrl,
       status,
-      batchNo,
-      validStart,
-      validEnd,
     } = body;
 
+    // 自动生成批次号
+    const batchNo = await generateBatchNo();
+
     // 验证必填字段
-    if (!cardNo || !certNo || !tagNo || !brand || !series || !productName || !issueYear || !language || !productNo || !grade || !frontImageUrl || !backImageUrl) {
+    if (!certNo || !brand || !series || !productName || !issueYear || !language || !productNo || !grade || !frontImageUrl || !backImageUrl) {
       return NextResponse.json(
         { error: "请填写所有必填字段" },
         { status: 400 }
       );
     }
 
-    // 检查卡号是否已存在
+    // 检查证书编号是否已存在
     const existing = await prisma.card.findUnique({
-      where: { cardNo },
+      where: { certNo },
     });
 
     if (existing) {
       return NextResponse.json(
-        { error: "卡号已存在" },
+        { error: "证书编号已存在" },
         { status: 400 }
       );
     }
 
     const card = await prisma.card.create({
       data: {
-        cardNo,
         certNo,
-        tagNo,
         brand,
         series,
         productName,
@@ -61,9 +58,7 @@ export async function POST(request: NextRequest) {
         frontImageUrl,
         backImageUrl,
         status: status || "active",
-        batchNo: batchNo || null,
-        validStart: validStart ? new Date(validStart) : null,
-        validEnd: validEnd ? new Date(validEnd) : null,
+        batchNo,
       },
     });
 

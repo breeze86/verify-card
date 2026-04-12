@@ -63,7 +63,7 @@ export default function AdminLogin() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 focus:outline-none"
+              className="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl focus:border-blue-500 focus:outline-none text-slate-800 placeholder:text-slate-400"
               placeholder="请输入用户名"
               required
             />
@@ -77,7 +77,7 @@ export default function AdminLogin() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 focus:outline-none"
+              className="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl focus:border-blue-500 focus:outline-none text-slate-800 placeholder:text-slate-400"
               placeholder="请输入密码"
               required
             />

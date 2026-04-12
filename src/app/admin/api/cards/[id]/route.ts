@@ -44,9 +44,7 @@ export async function PUT(
     const { id } = await params;
     const body = await request.json();
     const {
-      cardNo,
       certNo,
-      tagNo,
       brand,
       series,
       productName,
@@ -58,29 +56,27 @@ export async function PUT(
       backImageUrl,
       status,
       batchNo,
-      validStart,
-      validEnd,
     } = body;
 
     // 验证必填字段
-    if (!cardNo || !certNo || !tagNo || !brand || !series || !productName || !issueYear || !language || !productNo || !grade || !frontImageUrl || !backImageUrl) {
+    if (!certNo || !brand || !series || !productName || !issueYear || !language || !productNo || !grade || !frontImageUrl || !backImageUrl) {
       return NextResponse.json(
         { error: "请填写所有必填字段" },
         { status: 400 }
       );
     }
 
-    // 检查卡号是否被其他卡片使用
+    // 检查证书编号是否被其他卡片使用
     const existing = await prisma.card.findFirst({
       where: {
-        cardNo,
+        certNo,
         id: { not: id },
       },
     });
 
     if (existing) {
       return NextResponse.json(
-        { error: "卡号已被其他卡片使用" },
+        { error: "证书编号已被其他卡片使用" },
         { status: 400 }
       );
     }
@@ -88,9 +84,7 @@ export async function PUT(
     const card = await prisma.card.update({
       where: { id },
       data: {
-        cardNo,
         certNo,
-        tagNo,
         brand,
         series,
         productName,
@@ -102,8 +96,6 @@ export async function PUT(
         backImageUrl,
         status: status || "active",
         batchNo: batchNo || null,
-        validStart: validStart ? new Date(validStart) : null,
-        validEnd: validEnd ? new Date(validEnd) : null,
       },
     });
 

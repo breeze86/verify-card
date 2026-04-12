@@ -3,10 +3,15 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getAdminSession } from "@/lib/admin-auth";
 import LogoutButton from "./LogoutButton";
+import DeleteButton from "./DeleteButton";
+import Pagination from "./Pagination";
+import ImagePreview from "../components/ImagePreview";
 
 interface PageProps {
-  searchParams: Promise<{ page?: string; search?: string }>;
+  searchParams: Promise<{ page?: string; search?: string; pageSize?: string }>;
 }
+
+const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
 
 export default async function CardsPage({ searchParams }: PageProps) {
   const admin = await getAdminSession();
@@ -17,13 +22,12 @@ export default async function CardsPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const page = parseInt(params.page || "1", 10);
   const search = params.search || "";
-  const pageSize = 20;
+  const pageSize = parseInt(params.pageSize || "10", 10);
 
   const where = search
     ? {
         deletedAt: null as null | Date,
         OR: [
-          { cardNo: { contains: search } },
           { certNo: { contains: search } },
           { productName: { contains: search } },
         ],
@@ -49,6 +53,12 @@ export default async function CardsPage({ searchParams }: PageProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <h1 className="text-xl font-bold text-slate-800">卡片管理</h1>
           <div className="flex items-center gap-4">
+            <Link
+              href="/admin/password"
+              className="text-slate-500 text-sm hover:text-slate-700"
+            >
+              修改密码
+            </Link>
             <span className="text-slate-500 text-sm">{admin.username}</span>
             <LogoutButton />
           </div>
@@ -71,6 +81,12 @@ export default async function CardsPage({ searchParams }: PageProps) {
           >
             📁 批量导入
           </Link>
+          <a
+            href={`/admin/api/cards/export${search ? `?search=${search}` : ""}`}
+            className="inline-flex items-center justify-center px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors"
+          >
+            📤 导出记录
+          </a>
 
           <form className="flex-1 sm:max-w-md sm:ml-auto">
             <div className="flex gap-2">
@@ -78,8 +94,8 @@ export default async function CardsPage({ searchParams }: PageProps) {
                 type="text"
                 name="search"
                 defaultValue={search}
-                placeholder="搜索卡号、证书编号、商品名称"
-                className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                placeholder="搜索证书编号、商品名称"
+                className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
               />
               <button
                 type="submit"
@@ -97,10 +113,13 @@ export default async function CardsPage({ searchParams }: PageProps) {
             <thead className="bg-slate-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  卡号
+                  证书编号
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  证书编号
+                  正面
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                  反面
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                   商品名称
@@ -119,11 +138,14 @@ export default async function CardsPage({ searchParams }: PageProps) {
             <tbody className="bg-white divide-y divide-slate-200">
               {cards.map((card: typeof cards[0]) => (
                 <tr key={card.id} className="hover:bg-slate-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
-                    {card.cardNo}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-slate-900">
                     {card.certNo}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <ImagePreview src={card.frontImageUrl} alt="正面" />
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <ImagePreview src={card.backImageUrl} alt="反面" />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
                     {card.productName}
@@ -155,23 +177,7 @@ export default async function CardsPage({ searchParams }: PageProps) {
                     >
                       编辑
                     </Link>
-                    <form
-                      action={`/admin/api/cards/${card.id}/delete`}
-                      method="POST"
-                      className="inline"
-                      onSubmit={(e) => {
-                        if (!confirm("确定要删除这张卡片吗？")) {
-                          e.preventDefault();
-                        }
-                      }}
-                    >
-                      <button
-                        type="submit"
-                        className="text-red-600 hover:text-red-900"
-                      >
-                        删除
-                      </button>
-                    </form>
+                    <DeleteButton cardId={card.id} />
                   </td>
                 </tr>
               ))}
@@ -190,33 +196,13 @@ export default async function CardsPage({ searchParams }: PageProps) {
         </div>
 
         {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="flex justify-center gap-2 mt-6">
-            {page > 1 && (
-              <Link
-                href={`/admin/cards?page=${page - 1}${
-                  search ? `&search=${search}` : ""
-                }`}
-                className="px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-50"
-              >
-                上一页
-              </Link>
-            )}
-            <span className="px-4 py-2 text-slate-600">
-              第 {page} / {totalPages} 页（共 {total} 条）
-            </span>
-            {page < totalPages && (
-              <Link
-                href={`/admin/cards?page=${page + 1}${
-                  search ? `&search=${search}` : ""
-                }`}
-                className="px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-50"
-              >
-                下一页
-              </Link>
-            )}
-          </div>
-        )}
+        <Pagination
+          page={page}
+          pageSize={pageSize}
+          total={total}
+          totalPages={totalPages}
+          search={search}
+        />
       </main>
     </div>
   );
