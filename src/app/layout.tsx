@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "STG & Astra - Card Authentication",
+  title: "STG & Astra - Card Grading",
   description: "Professional trading card grading and authentication services for Pokémon, Yu-Gi-Oh!, Magic: The Gathering, and sports cards",
 };
 

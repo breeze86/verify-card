@@ -22,6 +22,7 @@ export default function Home() {
   const [result, setResult] = useState<CardData | null>(null);
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [enlargedImage, setEnlargedImage] = useState<{ url: string; alt: string } | null>(null);
 
   const handleAuthenticate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,7 +38,7 @@ export default function Home() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "No matching card record found for this certification number. Please verify the number and try again.");
+        setError(data.error || "No grading record found for this certification number. Please verify the number and try again.");
         return;
       }
 
@@ -106,10 +107,10 @@ export default function Home() {
       <main className="max-w-5xl mx-auto px-4 py-10 md:py-14">
         <div className="text-center mb-10">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200 bg-clip-text text-transparent">
-            Card Authentication
+            Card Grading
           </h1>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Enter your certification number to verify authenticity and view grading details
+            Enter your certification number to view card grading details
           </p>
         </div>
 
@@ -163,7 +164,7 @@ export default function Home() {
                   </svg>
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-amber-400 leading-tight">Certificate of Authenticity</h2>
+                  <h2 className="text-lg font-bold text-amber-400 leading-tight">Card Grading Certificate</h2>
                   <p className="text-slate-500 text-xs">STG & Astra Grading Services</p>
                 </div>
               </div>
@@ -197,41 +198,47 @@ export default function Home() {
 
                 {/* Images Grid */}
                 <div className="grid grid-cols-2 gap-4 max-w-[80%] mx-auto">
-                      <div className="bg-slate-800/50 rounded-lg p-2 border border-slate-700">
-                        <div className="aspect-[2/3] relative rounded overflow-hidden bg-slate-900">
-                          {result.frontImageUrl ? (
-                            <Image
-                              src={result.frontImageUrl}
-                              alt="Card Front"
-                              fill
-                              className="object-contain"
-                            />
-                          ) : (
-                            <div className="flex items-center justify-center h-full text-slate-500 text-sm">
-                              No image
-                            </div>
-                          )}
+                  <div
+                    className="bg-slate-800/50 rounded-lg p-2 border border-slate-700 cursor-pointer hover:border-amber-500/50 transition-colors"
+                    onClick={() => result.frontImageUrl && setEnlargedImage({ url: result.frontImageUrl, alt: "Card Front" })}
+                  >
+                    <div className="aspect-[2/3] relative rounded overflow-hidden bg-slate-900">
+                      {result.frontImageUrl ? (
+                        <Image
+                          src={result.frontImageUrl}
+                          alt="Card Front"
+                          fill
+                          className="object-contain hover:scale-105 transition-transform"
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center h-full text-slate-500 text-sm">
+                          No image
                         </div>
-                        <div className="text-center mt-1.5 text-xs text-slate-500 font-medium uppercase tracking-wider">Front</div>
-                      </div>
-                      <div className="bg-slate-800/50 rounded-lg p-2 border border-slate-700">
-                        <div className="aspect-[2/3] relative rounded overflow-hidden bg-slate-900">
-                          {result.backImageUrl ? (
-                            <Image
-                              src={result.backImageUrl}
-                              alt="Card Back"
-                              fill
-                              className="object-contain"
-                            />
-                          ) : (
-                            <div className="flex items-center justify-center h-full text-slate-500 text-sm">
-                              No image
-                            </div>
-                          )}
-                        </div>
-                        <div className="text-center mt-1.5 text-xs text-slate-500 font-medium uppercase tracking-wider">Back</div>
-                      </div>
+                      )}
                     </div>
+                    <div className="text-center mt-1.5 text-xs text-slate-500 font-medium uppercase tracking-wider">Front</div>
+                  </div>
+                  <div
+                    className="bg-slate-800/50 rounded-lg p-2 border border-slate-700 cursor-pointer hover:border-amber-500/50 transition-colors"
+                    onClick={() => result.backImageUrl && setEnlargedImage({ url: result.backImageUrl, alt: "Card Back" })}
+                  >
+                    <div className="aspect-[2/3] relative rounded overflow-hidden bg-slate-900">
+                      {result.backImageUrl ? (
+                        <Image
+                          src={result.backImageUrl}
+                          alt="Card Back"
+                          fill
+                          className="object-contain hover:scale-105 transition-transform"
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center h-full text-slate-500 text-sm">
+                          No image
+                        </div>
+                      )}
+                    </div>
+                    <div className="text-center mt-1.5 text-xs text-slate-500 font-medium uppercase tracking-wider">Back</div>
+                  </div>
+                </div>
 
                 {/* Card Details - Compact Grid */}
                 <div className="mt-5 pt-4 border-t border-slate-700/50 flex flex-col items-center">
@@ -268,7 +275,7 @@ export default function Home() {
                 <div className="mt-4 pt-3 border-t border-slate-700/50 flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
                     <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-                    <span className="text-xs text-slate-400">Authentication Verified</span>
+                    <span className="text-xs text-slate-400">Grading Verified</span>
                   </div>
                   <div className="text-xs text-slate-500 font-mono">SECURE • AUTHENTIC • GUARANTEED</div>
                 </div>
@@ -348,6 +355,37 @@ export default function Home() {
         <p>© {new Date().getFullYear()} STG & Astra Grading. All rights reserved.</p>
       </footer>
 
+      {/* Enlarged Image Modal */}
+      {enlargedImage && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
+          onClick={() => setEnlargedImage(null)}
+        >
+          <div className="relative max-w-5xl max-h-[90vh] w-full flex flex-col items-center">
+            <button
+              onClick={() => setEnlargedImage(null)}
+              className="absolute -top-12 right-0 w-10 h-10 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white transition-colors"
+              aria-label="Close"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <div className="relative w-full h-[80vh] flex items-center justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={enlargedImage.url}
+                alt={enlargedImage.alt}
+                className="max-w-full max-h-full object-contain rounded-lg"
+                onClick={(e) => e.stopPropagation()}
+              />
+            </div>
+            <div className="mt-4 text-center">
+              <span className="text-amber-400 text-lg font-medium">{enlargedImage.alt}</span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

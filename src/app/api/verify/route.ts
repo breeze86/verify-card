@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
 
     if (!card || card.deletedAt) {
       return NextResponse.json(
-        { error: "No matching card record found for this certification number. Please verify the number and try again." },
+        { error: "No grading record found for this certification number. Please verify the number and try again." },
         { status: 404 }
       );
     }
