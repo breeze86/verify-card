@@ -106,7 +106,7 @@ export default function Home() {
       {/* Main content */}
       <main className="max-w-5xl mx-auto px-4 py-10 md:py-14">
         <div className="text-center mb-10">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200 bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-5xl font-bold mb-5 bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200 bg-clip-text text-transparent pb-1">
             Card Grading
           </h1>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
