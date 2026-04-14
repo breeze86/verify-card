@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "dotenv -e .env -- next dev",
     "build": "next build && pnpm copy:public",
-    "copy:public": "cp -r public .next/standalone/ 2>/dev/null || true",
+    "copy:public": "cp -r public .next/standalone/ 2>/dev/null || true && mkdir -p .next/standalone/.next && cp -r .next/static .next/standalone/.next/ 2>/dev/null || true",
     "start": "dotenv -e .env -- next start",
     "lint": "eslint",
     "db:push": "prisma db push",
