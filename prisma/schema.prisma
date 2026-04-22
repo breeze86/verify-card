@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,27 +8,20 @@ datasource db {
 }
 
 model Card {
-  id            String    @id @default(uuid())
+  id            String     @id @default(uuid())
   status        CardStatus @default(active)
-
-  // 验证结果字段
-  certNo        String    @unique @db.VarChar(100)
-  brand         String    @db.VarChar(100)
-  productName   String    @db.VarChar(200)
+  certNo        String     @unique @db.VarChar(100)
+  brand         String     @db.VarChar(100)
+  productName   String     @db.VarChar(200)
   issueYear     Int
-  language      String    @db.VarChar(50)
-  productNo     String    @db.VarChar(100)
-  grade         String    @db.VarChar(50)
-
-  // 照片字段
-  frontImageUrl String    @db.VarChar(500)
-  backImageUrl  String    @db.VarChar(500)
-
-  // 管理字段
-  batchNo       String?   @db.VarChar(100)
-
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  language      String     @db.VarChar(50)
+  productNo     String     @db.VarChar(100)
+  grade         String     @db.VarChar(50)
+  frontImageUrl String     @db.VarChar(500)
+  backImageUrl  String     @db.VarChar(500)
+  batchNo       String?    @db.VarChar(100)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
   deletedAt     DateTime?
 
   @@index([certNo])
@@ -40,11 +30,11 @@ model Card {
 }
 
 model Admin {
-  id            String    @id @default(uuid())
-  username      String    @unique @db.VarChar(50)
-  passwordHash  String    @db.VarChar(255)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id           String   @id @default(uuid())
+  username     String   @unique @db.VarChar(50)
+  passwordHash String   @db.VarChar(255)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@map("admins")
 }
