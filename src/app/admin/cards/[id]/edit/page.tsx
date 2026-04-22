@@ -8,7 +8,6 @@ interface Card {
   id: string;
   certNo: string;
   brand: string;
-  series: string;
   productName: string;
   issueYear: number;
   language: string;
@@ -137,19 +136,6 @@ export default function EditCardPage({ params }: { params: Promise<{ id: string 
                   type="text"
                   required
                   defaultValue={card?.brand}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  商品系列 <span className="text-red-500">*</span>
-                </label>
-                <input
-                  name="series"
-                  type="text"
-                  required
-                  defaultValue={card?.series}
                   className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
                 />
               </div>

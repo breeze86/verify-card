@@ -8,7 +8,6 @@ import ImagePreview from "../../components/ImagePreview";
 interface CardData {
   certNo?: string;
   brand?: string;
-  series?: string;
   productName?: string;
   issueYear?: string;
   language?: string;

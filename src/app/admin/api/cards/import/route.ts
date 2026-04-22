@@ -8,7 +8,6 @@ import { generateBatchNo } from "@/lib/batch-no";
 const CSV_HEADER_MAP: Record<string, keyof CardData> = {
   "证书编号": "certNo",
   "商品品牌": "brand",
-  "商品系列": "series",
   "商品名称": "productName",
   "发行年份": "issueYear",
   "语言": "language",
@@ -23,7 +22,6 @@ const CSV_HEADER_MAP: Record<string, keyof CardData> = {
 interface CardData {
   certNo?: string;
   brand?: string;
-  series?: string;
   productName?: string;
   issueYear?: string;
   language?: string;
@@ -60,7 +58,6 @@ function validateRow(row: CardData): string[] {
   const errors: string[] = [];
   if (!row.certNo?.trim()) errors.push("证书编号不能为空");
   if (!row.brand?.trim()) errors.push("商品品牌不能为空");
-  if (!row.series?.trim()) errors.push("商品系列不能为空");
   if (!row.productName?.trim()) errors.push("商品名称不能为空");
   if (!row.issueYear?.trim()) errors.push("发行年份不能为空");
   if (!row.language?.trim()) errors.push("语言不能为空");
@@ -151,7 +148,6 @@ export async function POST(request: NextRequest) {
           where: { certNo: row.certNo!.trim() },
           update: {
             brand: row.brand!.trim(),
-            series: row.series!.trim(),
             productName: row.productName!.trim(),
             issueYear: parseInt(row.issueYear!.trim(), 10),
             language: row.language!.trim(),
@@ -166,7 +162,6 @@ export async function POST(request: NextRequest) {
           create: {
             certNo: row.certNo!.trim(),
             brand: row.brand!.trim(),
-            series: row.series!.trim(),
             productName: row.productName!.trim(),
             issueYear: parseInt(row.issueYear!.trim(), 10),
             language: row.language!.trim(),

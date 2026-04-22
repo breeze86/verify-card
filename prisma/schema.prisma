@@ -17,7 +17,6 @@ model Card {
   // 验证结果字段
   certNo        String    @unique @db.VarChar(100)
   brand         String    @db.VarChar(100)
-  series        String    @db.VarChar(100)
   productName   String    @db.VarChar(200)
   issueYear     Int
   language      String    @db.VarChar(50)

@@ -90,18 +90,6 @@ export default function NewCardPage() {
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                  商品系列 <span className="text-red-500">*</span>
-                </label>
-                <input
-                  name="series"
-                  type="text"
-                  required
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none text-slate-900"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
                   商品名称 <span className="text-red-500">*</span>
                 </label>
                 <input

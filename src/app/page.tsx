@@ -6,7 +6,6 @@ import Image from "next/image";
 interface CardData {
   certNo: string;
   brand: string;
-  series: string;
   productName: string;
   issueYear: number;
   language: string;
@@ -244,10 +243,6 @@ export default function Home() {
                     <div>
                       <span className="text-[10px] sm:text-sm text-slate-400 uppercase block">Brand</span>
                       <p className="text-xs sm:text-base text-slate-200 font-medium truncate">{result.brand}</p>
-                    </div>
-                    <div>
-                      <span className="text-[10px] sm:text-sm text-slate-400 uppercase block">Series</span>
-                      <p className="text-xs sm:text-base text-slate-200 font-medium truncate">{result.series}</p>
                     </div>
                     <div>
                       <span className="text-[10px] sm:text-sm text-slate-400 uppercase block">Product</span>

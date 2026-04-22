@@ -41,7 +41,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       certNo: card.certNo,
       brand: card.brand,
-      series: card.series,
       productName: card.productName,
       issueYear: card.issueYear,
       language: card.language,

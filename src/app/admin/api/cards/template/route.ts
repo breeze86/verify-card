@@ -9,7 +9,6 @@ export async function GET() {
     const headers = [
       "证书编号",
       "商品品牌",
-      "商品系列",
       "商品名称",
       "发行年份",
       "语言",
@@ -23,7 +22,6 @@ export async function GET() {
     const example = [
       "CERT-2024-001",
       "Pokémon",
-      "Scarlet & Violet",
       "Charizard EX",
       "2023",
       "English",

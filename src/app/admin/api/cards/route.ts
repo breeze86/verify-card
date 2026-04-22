@@ -11,7 +11,6 @@ export async function POST(request: NextRequest) {
     const {
       certNo,
       brand,
-      series,
       productName,
       issueYear,
       language,
@@ -26,7 +25,7 @@ export async function POST(request: NextRequest) {
     const batchNo = await generateBatchNo();
 
     // 验证必填字段
-    if (!certNo || !brand || !series || !productName || !issueYear || !language || !productNo || !grade || !frontImageUrl || !backImageUrl) {
+    if (!certNo || !brand || !productName || !issueYear || !language || !productNo || !grade || !frontImageUrl || !backImageUrl) {
       return NextResponse.json(
         { error: "请填写所有必填字段" },
         { status: 400 }
@@ -49,7 +48,6 @@ export async function POST(request: NextRequest) {
       data: {
         certNo,
         brand,
-        series,
         productName,
         issueYear,
         language,

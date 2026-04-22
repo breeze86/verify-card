@@ -30,7 +30,6 @@ export async function GET(request: NextRequest) {
     const headers = [
       "证书编号",
       "商品品牌",
-      "商品系列",
       "商品名称",
       "发行年份",
       "语言",
@@ -45,7 +44,6 @@ export async function GET(request: NextRequest) {
     const rows = cards.map((card) => [
       card.certNo,
       card.brand,
-      card.series,
       card.productName,
       card.issueYear.toString(),
       card.language,
